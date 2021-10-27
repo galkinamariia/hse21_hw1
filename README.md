@@ -4,10 +4,10 @@
 $ ls /usr/share/data-minor-bioinf/assembly/* | xargs -tI{} ln -s {} 
 ```
 ```
-$ seqtk sample -s 10052001 oil_R1.fastq 5000000 > PE1.fq
-$ seqtk sample -s 10052001 oil_R2.fastq 5000000 > PE2.fq
-$ seqtk sample -s 10052001 oilMP_S4_L001_R1_001.fastq 1500000 > MP1.fq
-$ seqtk sample -s 10052001 oilMP_S4_L001_R2_001.fastq 1500000 > MP2.fq
+$ seqtk sample -s 09012002 oil_R1.fastq 5000000 > PE1.fq
+$ seqtk sample -s 09012002 oil_R2.fastq 5000000 > PE2.fq
+$ seqtk sample -s 09012002 oilMP_S4_L001_R1_001.fastq 1500000 > MP1.fq
+$ seqtk sample -s 09012002 oilMP_S4_L001_R2_001.fastq 1500000 > MP2.fq
 ```
 ```
 $ rm *.fastq
@@ -62,10 +62,17 @@ $ multiqc fastqc_trimmed -o multiqc_trimmed
 ![fastqc_adapter_content_plot (1)](https://user-images.githubusercontent.com/59726719/139103310-7927c4be-6383-4483-9812-2414dd858919.png)
 
 ```
-$ screen -S mashishkin_1_assemble
+$ screen -S galkina_dz1
 $ bash
 $ platanus assemble -o Poil -f PE1.fq.trimmed PE2.fq.trimmed 2> assemble.log
-$ platanus scaffold -o Poil -c Poil_contig.fa -IP1 PE1.fq.trimmed PE2.fq.trimmed -OP2 MP1.fq.int_trimmed $ MP2.fq.int_trimmed 2> scaffold.LOGFILE
-$ platanus gap_close -o Poil -c Poil_scaffold.fa -IP1 PE1.fq.trimmed PE2.fq.trimmed -OP2 MP1.fq.int_trimmed $ MP2.fq.int_trimmed 2> gap_close.log
-$ rm *trimmed
+$ time platanus scaffold -o Poil -t 1 -c Poil_contig.fa -IP1 *.trimmed -OP2 *.int_trimmed 2> scaffold.log
+$ platanus gap_close -o Poil -t 1 -c Poil_scaffold.fa -IP1 *.trimmed -OP2 *.int_trimmed 2> gapclose.log
 ```
+### Итог домашнего задания:
+> Итоговое количество контигов: 616, их суммарная длина: 3925682, длина самого длинного контига: 179306, N50: 51588
+
+> Итоговое количество скаффлдов: 73, их суммарная длина: 3875850, длина самого длинного скаффолда: 3834986, N50: 3834986
+
+> Итовое количество гэпов (not gap closed): 62, их суммарная длина: 6086
+
+> Итоговое количество гэпов (gap closed): 8, их суммарная длина: 1593
